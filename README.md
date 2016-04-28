@@ -27,15 +27,18 @@ Generates pickled file "labeledhate_pyladies.p"
 
 #### xgb_CV_woutput_pyladies.py
 Run this to perform 5-fold cross validation, while outputting ROC curves, confusion matrices, feature importances, and AUC scores.
-Takes a long time to run. I was running this on a large AWS EC2 machine.
+Takes ~40 minutes to run on a macbook air.
 
 #### buildxgbmodel_pyladies.py
 Run this to build the model for future use/prediction.
 Creates xgboost model object ```hatepredictor_pyladies.model``` & tf-idf object ```vect_pyladies.p```
+Takes ~10 minutes to run on a macbook air
 
 #### runfinalmodelpreds.py
 Run this to run a comment through the model from the command line & get a prediction. Based on the small subset of data we worked with here.
 
+#### applyword2vec_pyladies.py
+Run to generate 2 word2vec models, one each of hate speech and not-hate speech. Takes <2 minutes to run on a macbook air.
 
 ### Data
 
