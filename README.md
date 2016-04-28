@@ -3,7 +3,8 @@ Repo for presenting online hate speech project to PyLadies Seattle, 4/28/2016
 
 Primary project repo at https://github.com/eyspahn/OnlineHateSpeech
 
-I'm going to make the Google Slideshow public...once I'm done with it. Link TBA.
+[Link to google slides presentation](https://docs.google.com/presentation/d/12Wfk2dyfDdNhtCdCFBYXg5HzlsPw96mrMaxFGYEss78/edit?usp=sharing)
+
 
 ## Setup
 
