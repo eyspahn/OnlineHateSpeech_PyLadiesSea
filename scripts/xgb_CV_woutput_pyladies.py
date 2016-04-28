@@ -24,7 +24,7 @@ plt.style.use('ggplot')
 stemmer = snowball.SnowballStemmer("english")
 
 
-def load_data(filename='labeledhate_pyladies.p'):
+def load_data(filename='../data/labeledhate_pyladies.p'):
     '''
     Load data into a data frame for use in running model
     '''
@@ -194,21 +194,14 @@ def main():
         xg_train = xgb.DMatrix(tfidf_X_train, label=y_train)
         # develop test data
         xg_test = xgb.DMatrix(tfidf_X_test, label=y_test)
-
         print('Classifying')
-
         # Set up xboost parameters
         # use softmax multi-class classification to return probabilities
-        param = {'objective': 'multi:softprob',
-                 'eta': 0.9,
-                 'max_depth': 6,
-                 'num_class': 5,
-                 }
-
+        param = {'objective': 'multi:softprob', 'eta': 0.9,
+                 'max_depth': 6, 'num_class': 5}
         watchlist = [(xg_train, 'train'), (xg_test, 'test')]
         num_round = 500
         bst = xgb.train(param, xg_train, num_round, watchlist, early_stopping_rounds=5)
-
         print('Predicting')
         # get prediction, this is in 1D array, need reshape to (ndata, nclass)
         # probabilities
@@ -220,7 +213,6 @@ def main():
         plt.savefig('ROCcurves_{0}.png'.format(kfoldcount))
 
         # Write Mean ROC values for the classes.
-        # have something like {'NotHate': [.805, .830, .85], 'SizeHate': [0.809, 0.75, 0.89] }
         aucfilename = 'MeanAUC_{0}.txt'.format(kfoldcount)
         with open(aucfilename, 'w') as f:
             for k, v in d_auc.iteritems():

@@ -5,6 +5,7 @@ Data in 30 GB sqlite database file available from https://www.kaggle.com/reddit/
 import sqlite3
 import pandas as pd
 import cPickle as pickle
+import numpy as np
 
 # Set up connection to database
 sqlite_file = '/Volumes/ja2/ja2_RedditProject/Data/database.sqlite'
@@ -36,11 +37,11 @@ df = pd.read_sql_query(query[0], conn)
 
 # iterate through queries and append to dataframe
 for i in range(1, len(query)):
-    print "Building df"
+    print "Building df, {0} out of {1} (subreddit: {2})".format(i, len(query), all_srs[i])
     df = df.append(pd.read_sql_query(query[i], conn), ignore_index=True)
 
 # Reset df index, to make it workable
-df.reset_index(drop=True)
+df = df.reset_index(drop=True)
 
 # Create a not hate label for all entries & write over with hateful labels where appropriate
 df['label'] = 'NotHate'
@@ -64,14 +65,17 @@ df.ix[(df.subreddit == 'TalesofFatHate'), 'label'] = 'SizeHate'
 print "Done with Hate Categorization"
 
 # save out a subset of these data to work with, so it doesn't take quite so long to run!
-# 1.5 million * 25% = 375,000 --> plenty
-dfsave = df.sample(frac=0.25, replace=False, weights=None, random_state=None, axis=0)
+# saving 200,000 comments & labels
+dfsave = df.ix[np.random.choice(df.index, 200000, replace=False)]
+
+# Reset df index, to make it workable
+dfsave = dfsave.reset_index(drop=True)
 
 # Save file for later access
-pickle.dump(dfsave, open('labeledhate_pyladies.p', 'wb'))
+pickle.dump(dfsave, open('../data/labeledhate_pyladies.p', 'wb'))
 
-# # To load file:
-# df = pickle.load(open('labeledhate_pyladies.p', 'rb'))
+# # To load file later:
+# df = pickle.load(open('../data/labeledhate_pyladies.p', 'rb'))
 
 # Don't forget to close the connection!!!
 conn.close()

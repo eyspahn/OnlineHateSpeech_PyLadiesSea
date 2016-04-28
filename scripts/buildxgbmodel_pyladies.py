@@ -19,7 +19,7 @@ plt.style.use('ggplot')
 
 stemmer = snowball.SnowballStemmer("english")
 
-def load_data(filename='labeledhate_pyladies.p'):
+def load_data(filename='../data/labeledhate_pyladies.p'):
     '''
     Load data into a data frame for use in running model
     '''
@@ -47,7 +47,7 @@ def main():
     print('Loading Data')
     df = load_data()
     X = df.body
-    # strip puctuation from X
+    # strip puctuation from X...should not be needed, since NLTK tokenizer should take care of this for us.
     X = X.apply(lambda x: ''.join([l for l in x if l not in punctuation]))
     y = df.label
 
@@ -62,7 +62,7 @@ def main():
     # fit & transform comments matrix
     tfidf_X = vect.fit_transform(X)
     # Save out vect & tfidf_X
-    pickle.dump(vect, open('vect.p', 'wb')
+    pickle.dump(vect, open('../data/vect_pyladies.p', 'wb'))
 
     # develop data to train model
     xg_train = xgb.DMatrix(tfidf_X, label=y)
@@ -75,14 +75,11 @@ def main():
              'num_class': 5
              }
     watchlist = [(xg_train, 'train')]
-    num_round = 450  # Number of rounds determined after running cross validation
+    num_round = 120  # Number of rounds determined after running cross validation
     bst = xgb.train(param, xg_train, num_round, watchlist)
 
-    # pickling just in case
-    pickle.dump(bst, open('bst.p', 'wb'))
-
     # save model
-    bst.save_model('hatespeech.model')
+    bst.save_model('../data/hatepredictor_pyladies.model')
 
 
 if __name__ == '__main__':

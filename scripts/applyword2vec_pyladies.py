@@ -10,7 +10,7 @@ import string
 # http://radimrehurek.com/gensim/models/word2vec.html
 
 
-def load_data(filename='../Data/labeledhate_5cats.p'):
+def load_data(filename='../data/labeledhate_pyladies.p'):
     '''
     Load data into a data frame for use in running model
     '''
@@ -96,23 +96,17 @@ if __name__ == '__main__':
     print('Running HateModel')
     HatePreparedComments = prepare_comments(HateComments)
     HateModel = Word2Vec(HatePreparedComments, size=200, workers=3)
-    HateModel.save('../Data/word2vecmodels/HateModel.model')
+    HateModel.save('../data/w2vHateModel.model')
+
+    print('Running NotHateModel')
+    NotHatePreparedComments = prepare_comments(NotHateComments)
+    NotHateModel = Word2Vec(NotHatePreparedComments, size=200, workers=3)
+    NotHateModel.save('../data/w2vNotHateModel.model')
 
 
 #     print('Separating Comments')
 #     NotHateComments, SizeHateComments, GenderHateComments, ReligionHateComments,\
 #     RaceHateComments, AllComments = separate_data(df)
-
-#     print('Running SizeHateModel')
-#     SizeHatePreparedComments = prepare_comments(SizeHateComments)
-#     SizeHateModel = Word2Vec(SizeHatePreparedComments, size=200, workers=3)
-#     SizeHateModel.save('../Data/word2vecmodels/SizeHateModel.model')
-#     # SizeHateModel=Word2Vec.load('../Data/word2vecmodels/SizeHateModel.model')
-
-#     print('Running NotHateModel')
-#     NotHatePreparedComments = prepare_comments(NotHateComments)
-#     NotHateModel = Word2Vec(NotHatePreparedComments, size=200, workers=3)
-#     NotHateModel.save('../Data/word2vecmodels/NotHateModel.model')
 
 #     print('Running GenderHateModel')
 #     GenderHatePreparedComments = prepare_comments(GenderHateComments)
